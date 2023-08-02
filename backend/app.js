@@ -34,5 +34,5 @@ app.use(errors()); // обработчик ошибок celebrate
 app.use(require('./middlewares/errorHandling'));
 // слушатель
 app.listen(PORT, () => {
-  console.log(`Сервер по адресу ${BASE_PATH} работает, порт: ${PORT}`);
+  console.log(`Сервер по адресу ${BASE_PATH} отлично работает, порт: ${PORT}`);
 });
