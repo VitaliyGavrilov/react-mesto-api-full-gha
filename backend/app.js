@@ -3,6 +3,7 @@ const express = require('express');// сервер
 const mongoose = require('mongoose');// бд
 const console = require('console');// шоб линтер не ругался как бабка
 const { errors } = require('celebrate');
+const cors = require('cors');
 const auth = require('./middlewares/auth');
 const { createUser, login } = require('./controllers/users');// импортируем контролеры для логина и регистрации
 const { validateLogin, validateCreateUser } = require('./middlewares/validation');// Валидация для логина и пароля
@@ -11,6 +12,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');// имп
 const { PORT = 3000, BASE_PATH = 'http://localhost:3000', MONGO_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;// переменные окружения
 // запускаем сервер
 const app = express();
+app.use(cors());
 // подключаемся к бд
 mongoose.connect(MONGO_URL)
   .then(() => console.log('Мы подлюченны к MongoDB'))
