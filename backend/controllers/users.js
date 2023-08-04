@@ -38,7 +38,7 @@ module.exports.getUserById = (req, res, next) => {
 // GET /users/me - возвращает информацию о текущем пользователе
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
-    .then((selectedUser) => res.status(OK).send(selectedUser))
+    .then((user) => res.status(OK).send(user))
     .catch(next);// переходим в централизованный обработчик ошибок
 };
 // PATCH /users/me — обновляет профиль
@@ -89,8 +89,8 @@ module.exports.login = (req, res, next) => {
   // проверяем данные методом модели
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const userToken = jwt.sign({ _id: user._id }, '123456789', { expiresIn: '7d' });
-      res.send({ userToken });
+      const token = jwt.sign({ _id: user._id }, '123456789', { expiresIn: '7d' });
+      res.send({ token });
     })
     .catch(next);
 };

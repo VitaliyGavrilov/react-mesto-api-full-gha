@@ -11,14 +11,14 @@ const {
 // GET /cards — возвращает все карточки
 module.exports.getCards = (req, res, next) => {
   Card.find({})
-    .then((cards) => res.status(OK).send({ data: cards }))
+    .then((cards) => res.status(OK).send(cards))
     .catch(next);// переходим в централизованный обработчик ошибок
 };
 // POST /cards — создаёт карточку
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
   Card.create({ name, link, owner: req.user._id })
-    .then((card) => res.status(CREATED).send({ data: card }))
+    .then((card) => res.status(CREATED).send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Ошибка создания карточки, переданы некорректные данные'));
@@ -31,14 +31,14 @@ module.exports.createCard = (req, res, next) => {
 module.exports.deleteCard = (req, res, next) => {
   const { cardId } = req.params;
   Card.findById(cardId)
-    .then((card) => {
-      if (!card) { // проверяем наличие
+    .then((selectCard) => {
+      if (!selectCard) { // проверяем наличие
         throw new NotFoundError('Нет карточки с таким id');
-      } else if (card.owner.toString() !== req.user._id) { // проверяем авторство
+      } else if (selectCard.owner.toString() !== req.user._id) { // проверяем авторство
         throw new ForbiddenError('Вы не являетесь автором карточки, удаление невозможно');
       } else { // если карточка есть и пользовтель-автор, то удаляем
         Card.findByIdAndRemove(cardId)
-          .then((usersCard) => res.status(OK).send({ data: usersCard }))
+          .then((card) => res.status(OK).send(card))
           .catch(next);
       }
     })
@@ -57,7 +57,7 @@ module.exports.likeCard = (req, res, next) => {
       if (!card) {
         throw new NotFoundError('Нет карточки с таким id');
       } else {
-        res.status(OK).send({ data: card });
+        res.status(OK).send(card);
       }
     })
     .catch((err) => {
@@ -75,7 +75,7 @@ module.exports.dislikeCard = (req, res, next) => {
       if (!card) {
         throw new NotFoundError('Нет карточки с таким id');
       } else {
-        res.status(OK).send({ data: card });
+        res.status(OK).send(card);
       }
     })
     .catch((err) => {

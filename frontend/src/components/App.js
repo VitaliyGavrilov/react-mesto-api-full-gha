@@ -43,7 +43,8 @@ function App() {
   const navigate = useNavigate();
   // ---Запрос на получение данных пользователя и карточек, только при успешном входе в систему
   useEffect(() => {
-    if (loggedIn) {
+    const token = localStorage.getItem("token");
+    if (token) {
       Promise.all([api.getUserInfo(), api.getInitialCards()])
         .then(([userInfo, initialCards]) => {
           setCurrentUser(userInfo);
@@ -54,13 +55,13 @@ function App() {
   }, [loggedIn]);
   // ---Если токен есть в локальном хранилише то переходим на базовую страницу
   useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    if (jwt) {
+    const token = localStorage.getItem("token");
+    if (token) {
       auth
-        .checkToken(jwt)
+        .checkToken()
         .then((res) => {
           setLoggedIn(true);
-          setEmail(res.data.email);
+          setEmail(res.email);
           navigate("/");
         })
         .catch((err) => {
@@ -86,7 +87,7 @@ function App() {
   function handleAddPlaceClick() { setIsAddPlacePopupOpen(true) }
   // -Обработчик сабмита добавления карточки
   function handleAddCard(cardItem) {
-    api.postCard({ name: cardItem.name, link: cardItem.link })
+    api.postCard(cardItem.name, cardItem.link)
       .then((card) => { 
         setCards([card, ...cards]);
         closeAllPopups(); 
@@ -137,7 +138,7 @@ function App() {
   // -Обработчик лайка
   function handleCardLike(card) {
     // -Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some(i => i === currentUser._id);
     // -Отправляем запрос в API и получаем обновлённые данные карточки
     api.changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
@@ -160,7 +161,7 @@ function App() {
     auth
       .login(email, password)
       .then((res) => {
-        localStorage.setItem("jwt", res.token);
+        localStorage.setItem("token", res.token);
         setLoggedIn(true);
         setEmail(email);
         navigate("/");
@@ -189,7 +190,7 @@ function App() {
   }
   // --Функция для выхода из аккаунта
   function signOut () {
-    localStorage.removeItem("jwt");
+    localStorage.removeItem("token");
     navigate("/sign-in");
     setLoggedIn(false);
     setEmail("");

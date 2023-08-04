@@ -5,9 +5,9 @@ function Card(props) {
   // Подписка на контекст
   const CurrentUser = useContext(CurrentUserContext);
   // Определение владения карточкой
-  const isOwn = props.card.owner._id === CurrentUser._id;
+  const isOwn = props.card.owner === CurrentUser._id;
   // Определение наличие поставленного лайка и создаем переменную для именни класса лайка 
-  const isLiked = props.card.likes.some(item => item._id === CurrentUser._id);
+  const isLiked = props.card.likes.some(item => item === CurrentUser._id);
   const cardLikeButtonClassName = (
     `element__like-button ${isLiked && 'element__like-button_active'}`
   );
