@@ -1,4 +1,4 @@
-export const BASE_URL = "http://localhost:3000";
+export const BASE_URL = "https://true.api.vit.nomoreparties.co";
 
 const checkResponse= (res) => {
   if (res.ok) {

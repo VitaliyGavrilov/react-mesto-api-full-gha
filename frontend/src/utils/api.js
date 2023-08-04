@@ -112,7 +112,7 @@ class Api {
 }
 
 const api = new Api ({
-  baseUrl: 'http://localhost:3000',
+  baseUrl: 'https://true.api.vit.nomoreparties.co',
 })
 
 export default api;
