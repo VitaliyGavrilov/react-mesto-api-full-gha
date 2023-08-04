@@ -5,12 +5,12 @@
   
 Пожалуйста, прикрепите в это описание ссылку на сайт, размещенный на Яндекс.Облаке.
 
-Адрес репозитория: https://github.com/...
+Адрес репозитория: https://github.com/VitaliyGavrilov/react-mesto-api-full-gha
 
 ## Ссылки на проект
 
-IP-адрес x.x.x.x
+IP-адрес 158.160.116.83
 
-Frontend https://...
+Frontend https://api.vit.nomoreparties.co
 
-Backend https://...
+Backend https://true.api.vit.nomoreparties.co
