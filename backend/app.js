@@ -1,4 +1,5 @@
 // подключаем модули и пакеты
+require('dotenv').config();
 const express = require('express');// сервер
 const mongoose = require('mongoose');// бд
 const console = require('console');// шоб линтер не ругался как бабка
